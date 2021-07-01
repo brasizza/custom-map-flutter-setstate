@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:custommarker/modules/home/home_controller.dart';
 import 'package:custommarker/modules/maps/maps_controller.dart';
 
-final MapsController controller = MapsController();
+late final MapsController controller;
 
 class MapsView extends StatefulWidget {
   final int page;
@@ -24,6 +24,7 @@ class _MapsViewState extends State<MapsView> {
 
   @override
   void initState() {
+    controller = MapsController(context: context);
     super.initState();
     setState(() {
       controller.setInitialPosition(-23.5649267, -46.6519566);

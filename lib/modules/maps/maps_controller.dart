@@ -2,17 +2,23 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:custommarker/app/data/model/location_model.dart';
-import 'package:custommarker/app/data/model/map_type.dart';
-import 'package:custommarker/app/data/repository/map_repository.dart';
+import 'package:custommarker/modules/maps/components/location_destriprion.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:custommarker/app/data/model/location_model.dart';
+import 'package:custommarker/app/data/model/map_type.dart';
+import 'package:custommarker/app/data/repository/map_repository.dart';
+
 class MapsController {
   late LatLng initialPositionMap;
   final MapRepository _repository = MapRepository();
-
+  final BuildContext context;
+  MapsController({
+    required this.context,
+  });
   Set<Marker> markers = {};
   void setInitialPosition(double lat, double lng) {
     initialPositionMap = LatLng(lat, lng);
@@ -38,7 +44,18 @@ class MapsController {
     } else {
       _icon = await _markerCusomImage(location.placePicture);
     }
-    Marker marker = Marker(markerId: MarkerId(location.hashCode.toString()), position: LatLng((location.lat ?? 0), location.lng ?? 0), icon: (_icon), onTap: () {});
+    Marker marker = Marker(
+      markerId: MarkerId(location.hashCode.toString()),
+      position: LatLng((location.lat ?? 0), location.lng ?? 0),
+      icon: (_icon),
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return Dialog(child: LocationDesription(location));
+            });
+      },
+    );
     return marker;
   }
 
