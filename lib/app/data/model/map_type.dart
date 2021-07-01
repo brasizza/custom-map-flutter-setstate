@@ -1,0 +1,4 @@
+enum MyMapTyes {
+  regular,
+  custom,
+}
